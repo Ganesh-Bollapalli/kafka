@@ -1,0 +1,34 @@
+Publish-Subscribe messaging workflow
+Kafka as a messaging system
+Kafka as a storage system
+Stream Processing using Kafka
+
+
+///////////////////////////////////////////////////////
+
+
+The broker uses message partitioning strategy storing each partition in the corresponding broker in a cluster
+
+Fetch requests are constantly sent by the follower replicas to the leader to consume recent messages. The request contains an offset of the message the replica wants to receive. 
+The leader responds to the request with a message at that offset.
+
+A replica is considered out of sync when it fails to update with recent messages within 10 seconds and loses credibility 
+to become a leader in the event of some failures with the current leader in the cluster.
+
+These are the minimum set of replicas that ought to be in sync with the lead replica whenever there is a change in the lead replica.
+
+To elect the new leader, all the follower ISRs register themselves with the Zookeeper.
+
+
+Metadata Requests are sent both by the Producer and Consumer to any broker and contain a list of topics it is interested in.
+The broker will respond to metadata request with the partitions of the topic, replicas for the partition, and the leader replica
+
+
+Produce requests are sent from the producer application and contain messages that need to be written to the Broker.
+The Producer sends these requests only to the leader replica. Otherwise, it will receive an error response saying "Not a Leader for Partition".
+The Producer could send these requests to the leader replica of a partition, by sending metadata request to any broker.
+If the privilege is available, it will write the data and check 'ack' (acknowledgment configuration).
+
+
+Fetch requests are sent by the consumer to Broker to read messages from an offset of a topic's leader partition. It is also used among Brokers to replicate partitions.
+The client sends an upper limit (maximum amount of data the client can accept from the broker), and a lower limit (minimum amount of data needed for a data transfer to happen)

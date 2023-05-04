@@ -1,0 +1,38 @@
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+
+Make copies of config/server.properties file into two new config files config/server-one.properties and config/server-two.properties, for broker 1 and broker 2 respectively.
+
+ii]. Edit the following parameters of config/server-one.properties.
+
+The id of the broker must be set to a unique integer.
+broker.id=1
+The port to which the socket server listens on.
+listeners=PLAINTEXT://:9093
+A comma-separated list of directories in which the log files are stored.
+log.dirs=/tmp/kafka-logs-1
+Repeat the same configurations for config/server-two.propertieswith appropriate parameters set.
+
+
+Broker1
+bin/kafka-server-start.sh config/server.properties
+Broker2
+bin/kafka-server-start.sh config/server-one.properties
+Broker3
+bin/kafka-server-start.sh config/server-two.properties
+
+
+bin/kafka-topics.sh –-bootstrap-server localhost:9092 --topic Multibrokerapplication --create --partitions 1 --replication-factor 3 
+
+
+
+bin/kafka-topics.sh --describe –-bootstrap-server localhost:9092 --topic Multibrokerapplication
+
+
+bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic Multibrokerapplication
+
+This is single node-multi broker demo
+This is the second message
+
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 
+--topic Multibrokerapplication --from-beginning

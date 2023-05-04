@@ -1,0 +1,43 @@
+Fresco play :-
+
+Terminal 1
+cd kafka
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+Terminal 2
+cd kafka
+bin/kafka-server-start.sh config/server.properties
+
+Terminal 3
+cd kafka
+bin/kafka-topics.sh --boostrap-server localhost:9092 --topic FirstTopic --create --partitions 3 --replication-factor 3
+bin/kafka-console-producer.sh --bootap-server localhost:9092 --topic FirstTopic
+
+Terminal 4
+cd kafka
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic FirstTopic --from-beginning
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+In any Treminal from scratch :-
+
+sudo apt-get update
+sudo apt-get install default-jre
+mkdir -p ~/Downloads
+wget "https://downloads.apache.org/kafka/3.2.3/kafka_2.13-3.2.3.tgz" -O ~/Downloads/kafka.tgz
+mkdir -p ~/kafka
+cd ~/kafka
+tar -xvzf ~/Downloads/kafka.tgz --strip 1
+bin/zookeeper-server-start.sh config/zookeeper.properties
+bin/kafka-server-start.sh config/server.properties
+
+
+
+
+
+
+
